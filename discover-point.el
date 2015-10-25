@@ -29,23 +29,23 @@
 
 ;;; Code:
 
-(defun bin-string-p (value)
+(defun dp/bin-string-p (value)
   "Check if VALUE is a binary string of chars in [0-1]s."
   (string-match "\\`[0-1]+\\'" value))
 
-(defun oct-string-p (value)
+(defun dp/oct-string-p (value)
   "Check if VALUE is a octal string of chars in [0-7]s."
   (string-match "\\`[0-7]+\\'" value))
 
-(defun dec-string-p (value)
+(defun dp/dec-string-p (value)
   "Check if VALUE is a decimal string of chars in [0-9]s."
   (string-match "\\`[0-9]+\\'" value))
 
-(defun hex-string-p (value)
+(defun dp/hex-string-p (value)
   "Check if VALUE is a hex string of chars in [0-9a-f]s."
   (string-match "\\`[0-9a-f]+\\'" value))
 
-(defun convert-to-number (value base)
+(defun dp/convert-to-number (value base)
   "Convert VALUE to number in BASE, or nil if not possible."
   (let ((num (string-to-number value base)))
     (if (and (zerop num)
@@ -53,19 +53,19 @@
         nil
       num)))
 
-(defun discover--value (value)
+(defun dp/discover--value (value)
   "Subroutine to convert VALUE from number or character."
-  (let* ((bin (if (bin-string-p value)
-                  (convert-to-number value 2)
+  (let* ((bin (if (dp/bin-string-p value)
+                  (dp/convert-to-number value 2)
                 nil))
-         (oct (if (oct-string-p value)
-                  (convert-to-number value 8)
+         (oct (if (dp/oct-string-p value)
+                  (dp/convert-to-number value 8)
                 nil))
-         (dec (if (dec-string-p value)
-                  (convert-to-number value 10)
+         (dec (if (dp/dec-string-p value)
+                  (dp/convert-to-number value 10)
                 nil))
-         (hex (if (hex-string-p value)
-                  (convert-to-number value 16)
+         (hex (if (dp/hex-string-p value)
+                  (dp/convert-to-number value 16)
                 nil))
          (msg ""))
     (if dec
@@ -83,10 +83,10 @@
   "Discover information about VALUE."
   (interactive (list (read-string "Value: ")))
   (let ((msg ""))
-    (if (not (hex-string-p value)) ;; If not bin, oct, dec, or hex..
+    (if (not (dp/hex-string-p value)) ;; If not bin, oct, dec, or hex..
         (dolist (val (string-to-list value))
-          (setq msg (format "%s\n%s" msg (discover--value (number-to-string val)))))
-      (setq msg (concat msg (discover--value value))))
+          (setq msg (format "%s\n%s" msg (dp/discover--value (number-to-string val)))))
+      (setq msg (concat msg (dp/discover--value value))))
     (if (= (string-width msg) 0)
         (message "No results for '%s'." value)
       (message "'%s':%s" value msg))))
