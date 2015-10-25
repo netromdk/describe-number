@@ -52,14 +52,14 @@
 
 (defun discover--value (value)
   "Subroutine to convert VALUE from number or character."
-  (let* ((dec (if (dec-string-p value)
-                  (convert-to-number value 10)
-                  nil))
-         (bin (if (bin-string-p value)
+  (let* ((bin (if (bin-string-p value)
                   (convert-to-number value 2)
                 nil))
          (oct (if (oct-string-p value)
                   (convert-to-number value 8)
+                nil))
+         (dec (if (dec-string-p value)
+                  (convert-to-number value 10)
                 nil))
          (hex (if (hex-string-p value)
                   (convert-to-number value 16)
@@ -81,8 +81,8 @@
   (interactive (list (read-string "Value: ")))
   (let ((msg ""))
     (if (not (hex-string-p value)) ;; If not bin, oct, dec, or hex..
-          (dolist (val (string-to-list value))
-            (setq msg (format "%s\n%s" msg (discover--value (number-to-string val)))))
+        (dolist (val (string-to-list value))
+          (setq msg (format "%s\n%s" msg (discover--value (number-to-string val)))))
       (setq msg (concat msg (discover--value value))))
     (if (= (string-width msg) 0)
         (message "No results for '%s'." value)
@@ -101,5 +101,4 @@
 
 
 (provide 'discover-point)
-
 ;;; discover-point.el ends here
