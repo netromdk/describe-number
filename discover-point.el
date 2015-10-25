@@ -54,30 +54,29 @@
 (defun discover-value (value)
   "Discover information about VALUE."
   (interactive (list (read-string "Value: ")))
-  (let* ((bin (if (bin-string-p value)
+  (let* ((dec (if (dec-string-p value)
+                  (convert-to-number value 10)
+                nil))
+         (bin (if (bin-string-p value)
                   (convert-to-number value 2)
                 nil))
          (oct (if (oct-string-p value)
                   (convert-to-number value 8)
-                nil))
-         (dec (if (dec-string-p value)
-                  (convert-to-number value 10)
                 nil))
          (hex (if (hex-string-p value)
                   (convert-to-number value 16)
                 nil))
          (msg ""))
     (if bin
-        (setq msg (format "%s (bin=%d hex=%X char='%c')" msg bin bin bin)))
+        (setq msg (format "%s\nb->d=%d (#x%X #o%o ?%c)" msg bin bin bin bin)))
     (if oct
-        (setq msg (format "%s (oct=%o hex=%X char='%c')" msg dec oct oct)))
-    (if dec
-        (setq msg (format "%s (dec=%d hex=%X char='%c')" msg dec dec dec)))
+        (setq msg (format "%s\no->d=%d (#x%X ?%c)" msg oct oct oct)))
     (if hex
-        (setq msg (format "%s (hex=%d char='%c')" msg hex hex)))
+        (setq msg (format "%s\nx->d=%d (#o%o ?%c)" msg hex hex hex)))
     (if (= (string-width msg) 0)
         (message "No results for '%s'." value)
-      (message "'%s' (len=%d) as%s" value (string-width value) msg))))
+      (message "'%s' (len=%d): %d #x%X #o%o ?%c%s"
+               value (string-width value) dec dec dec dec msg))))
 
 ;;;###autoload
 (defun discover-at-point ()
