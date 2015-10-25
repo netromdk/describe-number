@@ -1,7 +1,12 @@
 # discover-point
 Discover information about value at point or region in Emacs. If value is a number then binary/octal/decimal/hexadecimal/character values and conversions are shown. For strings each character is processed in the same way.
 
-Use `discover-at-point` on point/region or `discover-value` to input value manually. Might be preferable to bind `discover-at-point` to some key.
+Use `discover-at-point` on point/region or `discover-value` to input value manually.
+
+Might be preferable to bind `discover-at-point` to some key:
+```elisp
+(global-set-key (kbd "C-c ?") 'discover-at-point)
+```
 
 # Demo
 When using "101" as input to `discover-at-point` or `discover-value`:
