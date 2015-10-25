@@ -96,9 +96,8 @@
   "Discover information about value at point or region by using `discover-value'."
   (interactive)
   (if (use-region-p)
-      (progn
-        (discover-value
-         (buffer-substring-no-properties (region-beginning) (region-end))))
+      (discover-value
+       (buffer-substring-no-properties (region-beginning) (region-end)))
     (discover-value
      (substring-no-properties (thing-at-point 'word)))))
 
