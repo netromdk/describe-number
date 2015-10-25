@@ -76,8 +76,8 @@
     (if hex
         (setq msg (format "%s (hex=%d char='%c')" msg hex hex)))
     (if (= (string-width msg) 0)
-        (message "No results.")
-      (message "'%s' as%s" value msg))))
+        (message "No results for '%s'." value)
+      (message "'%s' (len=%d) as%s" value (string-width value) msg))))
 
 ;;;###autoload
 (defun discover-at-point ()
