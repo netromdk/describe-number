@@ -82,14 +82,16 @@
 (defun discover-value (value)
   "Discover information about VALUE."
   (interactive (list (read-string "Value: ")))
-  (let ((msg ""))
-    (if (not (dp/hex-string-p value)) ;; If not bin, oct, dec, or hex..
-        (dolist (val (string-to-list value))
-          (setq msg (format "%s\n%s" msg (dp/discover--value (number-to-string val)))))
-      (setq msg (concat msg (dp/discover--value value))))
-    (if (= (string-width msg) 0)
-        (message "No results for '%s'." value)
-      (message "'%s':%s" value msg))))
+  (if (> (string-width value) 0)
+      (let ((msg ""))
+        (if (not (dp/hex-string-p value)) ;; If not bin, oct, dec, or hex..
+            (dolist (val (string-to-list value))
+              (setq msg (format "%s\n%s" msg (dp/discover--value (number-to-string val)))))
+          (setq msg (concat msg (dp/discover--value value))))
+        (if (= (string-width msg) 0)
+            (message "No results for '%s'." value)
+          (message "'%s':%s" value msg)))
+    (message "Must input value!")))
 
 ;;;###autoload
 (defun discover-at-point ()
@@ -98,8 +100,11 @@
   (if (use-region-p)
       (discover-value
        (buffer-substring-no-properties (region-beginning) (region-end)))
-    (discover-value
-     (substring-no-properties (thing-at-point 'word)))))
+    (let ((thing (thing-at-point 'word)))
+      (if thing
+          (discover-value
+           (substring-no-properties (thing-at-point 'word)))
+        (message "Nothing at point!")))))
 
 
 (provide 'discover-point)
