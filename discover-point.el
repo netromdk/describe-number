@@ -67,6 +67,8 @@
                   (convert-to-number value 16)
                 nil))
          (msg ""))
+    (if dec
+        (setq msg (format "%s\n%d #x%X #o%o ?%c" msg dec dec dec dec)))
     (if bin
         (setq msg (format "%s\nb->d=%d (#x%X #o%o ?%c)" msg bin bin bin bin)))
     (if oct
@@ -75,8 +77,7 @@
         (setq msg (format "%s\nx->d=%d (#o%o ?%c)" msg hex hex hex)))
     (if (= (string-width msg) 0)
         (message "No results for '%s'." value)
-      (message "'%s' (len=%d): %d #x%X #o%o ?%c%s"
-               value (string-width value) dec dec dec dec msg))))
+      (message "'%s' (len=%d):%s" value (string-width value) msg))))
 
 ;;;###autoload
 (defun discover-at-point ()
