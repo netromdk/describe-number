@@ -5,24 +5,27 @@
 ;; Author: Morten Slot Kristensen <msk AT nullpointer DOT dk>
 ;; Keywords: discover value help
 ;; URL: https://github.com/netromdk/discover-point
-;; Version: 0.0.1
+;; Version: 0.1.0
 
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
+;; This program is free software; you can redistribute it and/or modify it under the terms of the
+;; GNU General Public License as published by the Free Software Foundation, either version 3 of the
+;; License, or (at your option) any later version.
 
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
+;; This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+;; even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
 
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;; You should have received a copy of the GNU General Public License along with this program.  If
+;; not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 
-;; Discover information about value at point.
+;; Discover information about value at point/region. If value is a number then
+;; binary/octal/decimal/hexadecimal/character values and conversions are shown. For strings each
+;; character is processed in the same way.
+;;
+;; Use `discover-at-point' on point/region or `discover-value' to input value manually. Might be
+;; preferable to bind `discover-at-point' to some key.
 
 ;;; Code:
 
@@ -90,7 +93,7 @@
 
 ;;;###autoload
 (defun discover-at-point ()
-  "Discover information about value/region at point."
+  "Discover information about value at point or region by using `discover-value'."
   (interactive)
   (if (use-region-p)
       (progn
