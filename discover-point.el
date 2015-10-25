@@ -1,4 +1,4 @@
-;;; discover-point.el --- Discover information about value at point -*- lexical-binding: t; -*-
+;;; discover-point.el --- Discover information about value at point.
 
 ;; Copyright (C) 2015  Morten Slot Kristensen
 
