@@ -24,8 +24,10 @@
 ;; binary/octal/decimal/hexadecimal/character values and conversions are shown. For strings each
 ;; character is processed in the same way.
 ;;
-;; Use `discover-at-point' on point/region or `discover-value' to input value manually. Might be
-;; preferable to bind `discover-at-point' to some key.
+;; Use `discover-at-point' on point/region or `discover-value' to input value manually.
+;;
+;; Might be preferable to bind `discover-at-point' to some key:
+;;   (global-set-key (kbd "C-c ?") 'discover-at-point)
 
 ;;; Code:
 
