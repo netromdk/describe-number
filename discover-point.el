@@ -50,13 +50,11 @@
         nil
       num)))
 
-;;;###autoload
-(defun discover-value (value)
-  "Discover information about VALUE."
-  (interactive (list (read-string "Value: ")))
+(defun discover--value (value)
+  "Subroutine to convert VALUE from number or character."
   (let* ((dec (if (dec-string-p value)
                   (convert-to-number value 10)
-                nil))
+                  nil))
          (bin (if (bin-string-p value)
                   (convert-to-number value 2)
                 nil))
@@ -68,16 +66,27 @@
                 nil))
          (msg ""))
     (if dec
-        (setq msg (format "%s\n%d #x%X #o%o ?%c" msg dec dec dec dec)))
+        (setq msg (format "%s [%d #x%X #o%o '%c']" msg dec dec dec dec)))
     (if bin
-        (setq msg (format "%s\nb->d=%d (#x%X #o%o ?%c)" msg bin bin bin bin)))
+        (setq msg (format "%s [b->d=%d #x%X #o%o '%c']" msg bin bin bin bin)))
     (if oct
-        (setq msg (format "%s\no->d=%d (#x%X ?%c)" msg oct oct oct)))
+        (setq msg (format "%s [o->d=%d #x%X '%c']" msg oct oct oct)))
     (if hex
-        (setq msg (format "%s\nx->d=%d (#o%o ?%c)" msg hex hex hex)))
+        (setq msg (format "%s [x->d=%d #o%o '%c']" msg hex hex hex)))
+    msg))
+
+;;;###autoload
+(defun discover-value (value)
+  "Discover information about VALUE."
+  (interactive (list (read-string "Value: ")))
+  (let ((msg ""))
+    (if (not (hex-string-p value)) ;; If not bin, oct, dec, or hex..
+          (dolist (val (string-to-list value))
+            (setq msg (format "%s\n%s" msg (discover--value (number-to-string val)))))
+      (setq msg (concat msg (discover--value value))))
     (if (= (string-width msg) 0)
         (message "No results for '%s'." value)
-      (message "'%s' (len=%d):%s" value (string-width value) msg))))
+      (message "'%s':%s" value msg))))
 
 ;;;###autoload
 (defun discover-at-point ()
