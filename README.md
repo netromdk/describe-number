@@ -13,12 +13,15 @@ Might be preferable to bind `describe-number-at-point` to some key:
 
 # Demo
 When using "101" as input to `describe-number-at-point` or `describe-number`:
+
 ![](demo-num.png)
 
 The package understands octal and hexadecimal prefixes, i.e. "o", "0o", "#o" and "x", "0x", "#x" respectively:
+
 ![](demo-prefix-num.png)
 
 In the case of using a string, e.g. "bin", it will process each character value separately:
+
 ![](demo-string.png)
 
 "b->d" means binary to decimal, "o->d" means octal to decimal, and "x->d" means hexadecimal to decimal.
