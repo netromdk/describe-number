@@ -31,22 +31,6 @@
 
 ;;; Code:
 
-(defun describe-number--bin-string-p (value)
-  "Check if VALUE is a binary string of chars in [0-1]s."
-  (string-match "\\`[0-1]+\\'" value))
-
-(defun describe-number--oct-string-p (value)
-  "Check if VALUE is a octal string of chars in [0-7]s."
-  (string-match "\\`[0-7]+\\'" value))
-
-(defun describe-number--dec-string-p (value)
-  "Check if VALUE is a decimal string of chars in [0-9]s."
-  (string-match "\\`[0-9]+\\'" value))
-
-(defun describe-number--hex-string-p (value)
-  "Check if VALUE is a hex string of chars in [0-9a-f]s."
-  (string-match "\\`[0-9a-f]+\\'" value))
-
 (defun describe-number--convert-to-number (value base)
   "Convert VALUE to number in BASE, or nil if not possible."
   (let ((num (string-to-number value base)))
@@ -55,20 +39,43 @@
         nil
       num)))
 
+(defun describe-number--get-bin-value (value)
+  "Retrieve binary VALUE from string."
+  (if (string-match "\\`[ ]*\\([0-1]+\\)[ ]*\\'" value)
+      (describe-number--convert-to-number (match-string 1 value) 2)
+    nil))
+
+(defun describe-number--get-oct-value (value)
+  "Retrieve octal VALUE from string with optional prefixes 'o', '0o', or '#o'."
+  (if (string-match "\\`[ ]*\\(?:[0#]?o\\)?\\([0-7]+\\)[ ]*\\'" value)
+      (describe-number--convert-to-number (match-string 1 value) 8)
+    nil))
+
+(defun describe-number--get-dec-value (value)
+  "Retrieve decimal VALUE from string."
+  (if (string-match "\\`[ ]*\\([0-9]+\\)[ ]*\\'" value)
+      (describe-number--convert-to-number (match-string 1 value) 10)
+    nil))
+
+(defun describe-number--get-hex-value (value)
+  "Retrieve hexadecimal VALUE from string with optional prefixes 'x', '0x', or '#x'."
+  (if (string-match "\\`[ ]*\\(?:[0#]?x\\)?\\([0-9a-f]+\\)[ ]*\\'" value)
+      (describe-number--convert-to-number (match-string 1 value) 16)
+    nil))
+
+(defun describe-number--is-number (value)
+  "Check if VALUE is binary, octal, decimal, or hexadecimal."
+  (or (describe-number--get-bin-value value)
+      (describe-number--get-oct-value value)
+      (describe-number--get-dec-value value)
+      (describe-number--get-hex-value value)))
+
 (defun describe-number--describe (value)
   "Subroutine to convert VALUE from number or character."
-  (let* ((bin (if (describe-number--bin-string-p value)
-                  (describe-number--convert-to-number value 2)
-                nil))
-         (oct (if (describe-number--oct-string-p value)
-                  (describe-number--convert-to-number value 8)
-                nil))
-         (dec (if (describe-number--dec-string-p value)
-                  (describe-number--convert-to-number value 10)
-                nil))
-         (hex (if (describe-number--hex-string-p value)
-                  (describe-number--convert-to-number value 16)
-                nil))
+  (let* ((bin (describe-number--get-bin-value value))
+         (oct (describe-number--get-oct-value value))
+         (dec (describe-number--get-dec-value value))
+         (hex (describe-number--get-hex-value value))
          (msg ""))
     (if dec
         (setq msg (format "%s [%d #x%X #o%o '%c']" msg dec dec dec dec)))
@@ -86,7 +93,7 @@
   (interactive (list (read-string "Value: ")))
   (if (> (string-width value) 0)
       (let ((msg ""))
-        (if (not (describe-number--hex-string-p value)) ;; If not bin, oct, dec, or hex..
+        (if (not (describe-number--is-number value)) ;; If not bin, oct, dec, or hex..
             (dolist (val (string-to-list value))
               (setq msg (format "%s\n%s" msg (describe-number--describe (number-to-string val)))))
           (setq msg (concat msg (describe-number--describe value))))
