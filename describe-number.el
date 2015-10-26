@@ -35,7 +35,7 @@
   "Convert VALUE to number in BASE, or nil if not possible."
   (let ((num (string-to-number value base)))
     (if (and (zerop num)
-             (string-match "\\`\\s-*0+\\.?0*\\s-*\\'" value))
+             (equal "0" value))
         nil
       num)))
 
@@ -63,7 +63,7 @@
       (describe-number--convert-to-number (match-string 1 value) 16)
     nil))
 
-(defun describe-number--is-number (value)
+(defun describe-number--is-number-p (value)
   "Check if VALUE is binary, octal, decimal, or hexadecimal."
   (or (describe-number--get-bin-value value)
       (describe-number--get-oct-value value)
@@ -93,7 +93,7 @@
   (interactive (list (read-string "Value: ")))
   (if (> (string-width value) 0)
       (let ((msg ""))
-        (if (not (describe-number--is-number value)) ;; If not bin, oct, dec, or hex..
+        (if (not (describe-number--is-number-p value)) ;; If not bin, oct, dec, or hex..
             (dolist (val (string-to-list value))
               (setq msg (format "%s\n%s" msg (describe-number--describe (number-to-string val)))))
           (setq msg (concat msg (describe-number--describe value))))
