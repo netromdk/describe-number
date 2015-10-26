@@ -1,4 +1,7 @@
 # describe-number
+
+[![MELPA](http://melpa.org/packages/describe-number-badge.svg)](http://melpa.org/#/describe-number)
+
 Describe number value at point or region in Emacs. If value is a number then binary/octal/decimal/hexadecimal/character values and conversions are shown. For strings each character is processed in the same way.
 
 Use `describe-number-at-point` on point/region or `describe-number` to input value manually.
