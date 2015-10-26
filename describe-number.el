@@ -35,7 +35,7 @@
   "Convert VALUE to number in BASE, or nil if not possible."
   (let ((num (string-to-number value base)))
     (if (and (zerop num)
-             (equal "0" value))
+             (not (string-match "\\`[ ]*0[ ]*\\'" value)))
         nil
       num)))
 
@@ -91,7 +91,7 @@
 (defun describe-number (value)
   "Discover information about VALUE."
   (interactive (list (read-string "Value: ")))
-  (if (zerop (length value))
+  (if (not (zerop (length value)))
       (let ((msg ""))
         (if (not (describe-number--is-number-p value)) ;; If not bin, oct, dec, or hex..
             (dolist (val (string-to-list value))
