@@ -8,7 +8,7 @@ Use `describe-number-at-point` on point/region or `describe-number` to input val
 
 Might be preferable to bind `describe-number-at-point` to some key:
 ```elisp
-(global-set-key (kbd "C-c ?") 'describe-number-at-point)
+(global-set-key (kbd "M-?") 'describe-number-at-point)
 ```
 
 # Demo
