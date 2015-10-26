@@ -91,13 +91,13 @@
 (defun describe-number (value)
   "Discover information about VALUE."
   (interactive (list (read-string "Value: ")))
-  (if (> (string-width value) 0)
+  (if (zerop (length value))
       (let ((msg ""))
         (if (not (describe-number--is-number-p value)) ;; If not bin, oct, dec, or hex..
             (dolist (val (string-to-list value))
               (setq msg (format "%s\n%s" msg (describe-number--describe (number-to-string val)))))
           (setq msg (concat msg (describe-number--describe value))))
-        (if (= (string-width msg) 0)
+        (if (zerop (length msg))
             (message "No results for '%s'." value)
           (message "'%s':%s" value msg)))
     (message "Must input value!")))
