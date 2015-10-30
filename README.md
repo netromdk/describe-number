@@ -5,7 +5,7 @@
 
 Describe arbitrarily large number value at point or region in Emacs. If value is a number then binary/octal/decimal/hexadecimal/character values and conversions are shown. For strings each character is processed in the same way.
 
-Arbitraily large numbers are support via [yabin.el](https://github.com/d5884/yabin).
+Arbitrarily large numbers are supported via [yabin.el](https://github.com/d5884/yabin).
 
 Use `describe-number-at-point` on point/region or `describe-number` to input value manually.
 
