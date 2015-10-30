@@ -40,13 +40,13 @@
       num)))
 
 (defun describe-number--get-bin-value (value)
-  "Retrieve binary VALUE from string."
-  (if (string-match "\\`[ ]*\\([0-1]+\\)[ ]*\\'" value)
+  "Retrieve binary VALUE from string with optional prefixes 'b', '0b', and '#b'."
+  (if (string-match "\\`[ ]*\\(?:[0#]?b\\)?\\([0-1]+\\)[ ]*\\'" value)
       (describe-number--convert-to-number (match-string 1 value) 2)
     nil))
 
 (defun describe-number--get-oct-value (value)
-  "Retrieve octal VALUE from string with optional prefixes 'o', '0o', or '#o'."
+  "Retrieve octal VALUE from string with optional prefixes 'o', '0o', and '#o'."
   (if (string-match "\\`[ ]*\\(?:[0#]?o\\)?\\([0-7]+\\)[ ]*\\'" value)
       (describe-number--convert-to-number (match-string 1 value) 8)
     nil))
@@ -58,7 +58,7 @@
     nil))
 
 (defun describe-number--get-hex-value (value)
-  "Retrieve hexadecimal VALUE from string with optional prefixes 'x', '0x', or '#x'."
+  "Retrieve hexadecimal VALUE from string with optional prefixes 'x', '0x', and '#x'."
   (if (string-match "\\`[ ]*\\(?:[0#]?x\\)?\\([0-9a-f]+\\)[ ]*\\'" value)
       (describe-number--convert-to-number (match-string 1 value) 16)
     nil))

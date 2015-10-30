@@ -17,7 +17,7 @@ When using "101" as input to `describe-number-at-point` or `describe-number`:
 
 ![](demo-num.png)
 
-The package understands octal and hexadecimal prefixes, i.e. "o", "0o", "#o" and "x", "0x", "#x" respectively:
+The package understands binary, octal, and hexadecimal prefixes, i.e. "b", "0b", "#b"; "o", "0o", "#o"; and "x", "0x", "#x" respectively:
 
 ![](demo-prefix-num.png)
 
