@@ -5,7 +5,7 @@
 ;; Author: Morten Slot Kristensen <msk AT nullpointer DOT dk>
 ;; Keywords: describe value help
 ;; URL: https://github.com/netromdk/describe-number
-;; Version: 0.2.0
+;; Version: 0.3.0
 ;; Package-Requires: ((yabin "1.1"))
 
 ;; This program is free software; you can redistribute it and/or modify it under the terms of the
