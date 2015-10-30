@@ -65,6 +65,21 @@
       (describe-number--get-dec-value value)
       (describe-number--get-hex-value value)))
 
+(defun describe-number--is-char-value-p (value)
+  "Check if VALUE is representable as a character."
+  (yabin-less-than-equal value (yabin-radix (max-char) 10)))
+
+(defun describe-number--get-char-value (value)
+  "Retrieve character value of VALUE if representable, otherwise nil."
+  (if (describe-number--is-char-value-p value)
+      (format "%c" (string-to-number (yabin-radix value 10)))
+    nil))
+
+(defun describe-number--char-or-empty-string (value)
+  "Retrieve character representation of VALUE or empty string if VALUE is too large."
+  (let ((ch (describe-number--get-char-value value)))
+    (if ch (format " '%s'" ch) "")))
+
 (defun describe-number--describe (value)
   "Subroutine to convert VALUE from number or character."
   (let* ((bin (describe-number--get-bin-value value))
@@ -74,36 +89,39 @@
          (msg ""))
     (if dec
         (setq msg
-              (format "%s [%s #x%s #o%s '%c']"
+              (format "%s [%s #x%s #o%s%s]"
                       msg
                       (yabin-format "%d" dec)
                       (yabin-format "%X" dec)
                       (yabin-format "%o" dec)
-                      dec)))
+                      (describe-number--char-or-empty-string dec))))
     (if bin
         (let ((bin (concat "2#" bin)))
           (setq msg
-                (format "%s [b->d=%s #x%s #o%s]"
+                (format "%s [b->d=%s #x%s #o%s%s]"
                         msg
                         (yabin-format "%d" bin)
                         (yabin-format "%X" bin)
-                        (yabin-format "%o" bin)))))
+                        (yabin-format "%o" bin)
+                        (describe-number--char-or-empty-string bin)))))
     (if oct
         (let ((oct (concat "8#" oct)))
           (setq msg
-                (format "%s [o->d=%s #x%s #o%s]"
+                (format "%s [o->d=%s #x%s #o%s%s]"
                         msg
                         (yabin-format "%d" oct)
                         (yabin-format "%X" oct)
-                        (yabin-format "%o" oct)))))
+                        (yabin-format "%o" oct)
+                        (describe-number--char-or-empty-string oct)))))
     (if hex
         (let ((hex (concat "16#" hex)))
           (setq msg
-                (format "%s [x->d=%s #x%s #o%s]"
+                (format "%s [x->d=%s #x%s #o%s%s]"
                         msg
                         (yabin-format "%d" hex)
                         (yabin-format "%X" hex)
-                        (yabin-format "%o" hex)))))
+                        (yabin-format "%o" hex)
+                        (describe-number--char-or-empty-string hex)))))
     msg))
 
 ;;;###autoload
