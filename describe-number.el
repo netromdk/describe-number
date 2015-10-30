@@ -6,6 +6,7 @@
 ;; Keywords: describe value help
 ;; URL: https://github.com/netromdk/describe-number
 ;; Version: 0.2.0
+;; Package-Requires: ((yabin "1.1"))
 
 ;; This program is free software; you can redistribute it and/or modify it under the terms of the
 ;; GNU General Public License as published by the Free Software Foundation, either version 3 of the
@@ -31,36 +32,30 @@
 
 ;;; Code:
 
-(defun describe-number--convert-to-number (value base)
-  "Convert VALUE to number in BASE, or nil if not possible."
-  (let ((num (string-to-number value base)))
-    (if (and (zerop num)
-             (not (string-match "\\`[ ]*0[ ]*\\'" value)))
-        nil
-      num)))
+(require 'yabin)
 
 (defun describe-number--get-bin-value (value)
   "Retrieve binary VALUE from string with optional prefixes 'b', '0b', and '#b'."
   (if (string-match "\\`[ ]*\\(?:[0#]?b\\)?\\([0-1]+\\)[ ]*\\'" value)
-      (describe-number--convert-to-number (match-string 1 value) 2)
+      (match-string 1 value)
     nil))
 
 (defun describe-number--get-oct-value (value)
   "Retrieve octal VALUE from string with optional prefixes 'o', '0o', and '#o'."
   (if (string-match "\\`[ ]*\\(?:[0#]?o\\)?\\([0-7]+\\)[ ]*\\'" value)
-      (describe-number--convert-to-number (match-string 1 value) 8)
+      (match-string 1 value)
     nil))
 
 (defun describe-number--get-dec-value (value)
   "Retrieve decimal VALUE from string."
   (if (string-match "\\`[ ]*\\([0-9]+\\)[ ]*\\'" value)
-      (describe-number--convert-to-number (match-string 1 value) 10)
+      (match-string 1 value)
     nil))
 
 (defun describe-number--get-hex-value (value)
   "Retrieve hexadecimal VALUE from string with optional prefixes 'x', '0x', and '#x'."
   (if (string-match "\\`[ ]*\\(?:[0#]?x\\)?\\([0-9a-f]+\\)[ ]*\\'" value)
-      (describe-number--convert-to-number (match-string 1 value) 16)
+      (match-string 1 value)
     nil))
 
 (defun describe-number--is-number-p (value)
@@ -78,13 +73,37 @@
          (hex (describe-number--get-hex-value value))
          (msg ""))
     (if dec
-        (setq msg (format "%s [%d #x%X #o%o '%c']" msg dec dec dec dec)))
+        (setq msg
+              (format "%s [%s #x%s #o%s '%c']"
+                      msg
+                      (yabin-format "%d" dec)
+                      (yabin-format "%X" dec)
+                      (yabin-format "%o" dec)
+                      dec)))
     (if bin
-        (setq msg (format "%s [b->d=%d #x%X #o%o '%c']" msg bin bin bin bin)))
+        (let ((bin (concat "2#" bin)))
+          (setq msg
+                (format "%s [b->d=%s #x%s #o%s]"
+                        msg
+                        (yabin-format "%d" bin)
+                        (yabin-format "%X" bin)
+                        (yabin-format "%o" bin)))))
     (if oct
-        (setq msg (format "%s [o->d=%d #x%X '%c']" msg oct oct oct)))
+        (let ((oct (concat "8#" oct)))
+          (setq msg
+                (format "%s [o->d=%s #x%s #o%s]"
+                        msg
+                        (yabin-format "%d" oct)
+                        (yabin-format "%X" oct)
+                        (yabin-format "%o" oct)))))
     (if hex
-        (setq msg (format "%s [x->d=%d #o%o '%c']" msg hex hex hex)))
+        (let ((hex (concat "16#" hex)))
+          (setq msg
+                (format "%s [x->d=%s #x%s #o%s]"
+                        msg
+                        (yabin-format "%d" hex)
+                        (yabin-format "%X" hex)
+                        (yabin-format "%o" hex)))))
     msg))
 
 ;;;###autoload
