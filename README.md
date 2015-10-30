@@ -3,7 +3,7 @@
 [![MELPA](http://melpa.org/packages/describe-number-badge.svg)](http://melpa.org/#/describe-number)
 [![MELPA Stable](http://stable.melpa.org/packages/describe-number-badge.svg)](http://stable.melpa.org/#/describe-number)
 
-Describe number value at point or region in Emacs. If value is a number then binary/octal/decimal/hexadecimal/character values and conversions are shown. For strings each character is processed in the same way.
+Describe arbitrarily large number value at point or region in Emacs. If value is a number then binary/octal/decimal/hexadecimal/character values and conversions are shown. For strings each character is processed in the same way.
 
 Use `describe-number-at-point` on point/region or `describe-number` to input value manually.
 
@@ -20,6 +20,10 @@ When using "101" as input to `describe-number-at-point` or `describe-number`:
 The package understands binary, octal, and hexadecimal prefixes, i.e. "b", "0b", "#b"; "o", "0o", "#o"; and "x", "0x", "#x" respectively:
 
 ![](demo-prefix-num.png)
+
+Arbitrarily large number inputs are supported:
+
+![](demo-arb-num.png)
 
 In the case of using a string, e.g. "bin", it will process each character value separately:
 

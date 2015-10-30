@@ -1,4 +1,4 @@
-;;; describe-number.el --- Describe number at point.
+;;; describe-number.el --- Describe arbitrarily large number at point.
 
 ;; Copyright (C) 2015  Morten Slot Kristensen
 
@@ -21,7 +21,7 @@
 
 ;;; Commentary:
 
-;; Describe number value at point/region. If value is a number then
+;; Describe arbitrarily large number value at point/region. If value is a number then
 ;; binary/octal/decimal/hexadecimal/character values and conversions are shown. For strings each
 ;; character is processed in the same way.
 ;;
