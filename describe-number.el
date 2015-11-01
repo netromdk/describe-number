@@ -89,37 +89,35 @@
          (msg ""))
     (if dec
         (setq msg
-              (format "%s [%s #x%s #o%s%s]"
+              (format "%s [%s #o%s #x%s%s]"
                       msg
                       (yabin-format "%d" dec)
-                      (yabin-format "%X" dec)
                       (yabin-format "%o" dec)
+                      (yabin-format "%X" dec)
                       (describe-number--char-or-empty-string dec))))
     (if bin
         (let ((bin (concat "2#" bin)))
           (setq msg
-                (format "%s [b->d=%s #x%s #o%s%s]"
+                (format "%s [b->d=%s #o%s #x%s%s]"
                         msg
                         (yabin-format "%d" bin)
-                        (yabin-format "%X" bin)
                         (yabin-format "%o" bin)
+                        (yabin-format "%X" bin)
                         (describe-number--char-or-empty-string bin)))))
     (if oct
         (let ((oct (concat "8#" oct)))
           (setq msg
-                (format "%s [o->d=%s #x%s #o%s%s]"
+                (format "%s [o->d=%s #x%s%s]"
                         msg
                         (yabin-format "%d" oct)
                         (yabin-format "%X" oct)
-                        (yabin-format "%o" oct)
                         (describe-number--char-or-empty-string oct)))))
     (if hex
         (let ((hex (concat "16#" hex)))
           (setq msg
-                (format "%s [x->d=%s #x%s #o%s%s]"
+                (format "%s [x->d=%s #o%s%s]"
                         msg
                         (yabin-format "%d" hex)
-                        (yabin-format "%X" hex)
                         (yabin-format "%o" hex)
                         (describe-number--char-or-empty-string hex)))))
     msg))
