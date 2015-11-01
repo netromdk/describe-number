@@ -5,7 +5,7 @@
 ;; Author: Morten Slot Kristensen <msk AT nullpointer DOT dk>
 ;; Keywords: describe value help
 ;; URL: https://github.com/netromdk/describe-number
-;; Version: 0.3.0
+;; Version: 0.3.1
 ;; Package-Requires: ((yabin "1.1"))
 
 ;; This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -81,7 +81,7 @@
     (if ch (format " '%s'" ch) "")))
 
 (defun describe-number--describe (value)
-  "Subroutine to convert VALUE from number or character."
+  "Return number description of VALUE as a string."
   (let* ((bin (describe-number--get-bin-value value))
          (oct (describe-number--get-oct-value value))
          (dec (describe-number--get-dec-value value))
@@ -126,7 +126,7 @@
 
 ;;;###autoload
 (defun describe-number (value)
-  "Discover information about VALUE."
+  "Describe information about VALUE, which can be a number or a string."
   (interactive (list (read-string "Value: ")))
   (if (not (zerop (length value)))
       (let ((msg ""))
@@ -141,15 +141,14 @@
 
 ;;;###autoload
 (defun describe-number-at-point ()
-  "Discover information about value at point or region by using `describe-number'."
+  "Describe number at point or region by using `describe-number'."
   (interactive)
   (if (use-region-p)
       (describe-number
        (buffer-substring-no-properties (region-beginning) (region-end)))
     (let ((thing (thing-at-point 'word)))
       (if thing
-          (describe-number
-           (substring-no-properties (thing-at-point 'word)))
+          (describe-number (substring-no-properties thing))
         (message "Nothing at point!")))))
 
 
